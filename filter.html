@@ -1,0 +1,82 @@
+<header id="main-header" class="bg-success text-white p-4 mb-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+          <h1 id="header-title">Item Lister</h1>
+      </div>
+      <div class="col-md-6 align-self-center">
+          <input type="text" class="form-control" id="filter" placeholder="Search Items...">
+      </div>
+    </div>
+  </div>
+</header>
+<div class="container">
+ <div id="main" class="card card-body">
+  <h2 class="title">Add Items</h2>
+  <form id="addForm" class="form-inline mb-3">
+    <input type="text" class="form-control mr-2" id="item">
+    <input type="submit" class="btn btn-dark" value="Submit">
+  </form>
+  <h2 class="title">Items</h2>
+  <ul id="items" class="list-group">
+    <li class="list-group-item">Item 1 <button class="btn btn-danger btn-sm float-right delete">X</button></li>
+    <li class="list-group-item">Item 2 <button class="btn btn-danger btn-sm float-right delete">X</button></li>
+    <li class="list-group-item">Item 3 <button class="btn btn-danger btn-sm float-right delete">X</button></li>
+    <li class="list-group-item">Item 4 <button class="btn btn-danger btn-sm float-right delete">X</button></li>
+  </ul>
+ </div>
+</div>
+
+<script>
+  
+document.getElementById("addForm").addEventListener("submit", function(event) {
+event.preventDefault(); 
+
+var newItem = document.getElementById("item").value;
+
+if (newItem.trim() !== "") {
+  var li = document.createElement("li");
+  li.className = "list-group-item";
+  li.appendChild(document.createTextNode(newItem));
+
+  var deleteBtn = document.createElement("button");
+  deleteBtn.className = "btn btn-danger btn-sm float-right delete";
+  deleteBtn.appendChild(document.createTextNode("X"));
+  li.appendChild(deleteBtn);
+
+  var editBtn = document.createElement("button");
+  editBtn.className = "btn btn-primary btn-sm float-right edit";
+  editBtn.appendChild(document.createTextNode("Edit"));
+  li.appendChild(editBtn);
+
+  document.getElementById("items").appendChild(li);
+
+
+  document.getElementById("item").value = "";
+}
+});
+
+document.getElementById("filter").addEventListener("input", function() {
+var filterValue = this.value.toLowerCase();
+var items = document.getElementById("items").getElementsByTagName("li");
+
+Array.from(items).forEach(function(item) {
+  var itemName = item.firstChild.textContent.toLowerCase();
+
+  if (itemName.indexOf(filterValue) !== -1) {
+    item.style.display = "block"; 
+  } else {
+    item.style.display = "none"; 
+  }
+});
+});
+
+document.getElementById('items').addEventListener("click", function(event){
+        if(event.target.classList.contains('delete')){
+          if(confirm('Are you sure?')){
+          var ListItem = event.target.parentElement;
+          ListItem.remove();
+          }
+        }
+      }); 
+</script>
